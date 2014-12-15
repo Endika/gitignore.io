@@ -5,14 +5,14 @@ The vision for gitignore.io is to become the authoritative source for .gitignore
 ## Ways You Can Help
 
 1. __Add Templates__ - Add more Programming Langauges, Operating Systems and IDE's
-2. __Organize Files__ - Help organize the files of the system into categories that will make it easier for new comers to contribute templates 
+2. __Organize Files__ - Help organize the files of the system into categories that will make it easier for new comers to contribute templates
 3. __Windows Command Line__ - Find a way to make the command line call run on Windows
 4. __Explore__ -  Git it used primarily used by software engineers but there might be other disciplines which may have workflows that could be improved by using Git
 
 
 ## Adding/Updating Templates
 
-* If you want to contirbute a new .gitignore template, please add the file to custom template directory.  
+* If you want to contribute a new .gitignore template, please add the file to custom template directory.
 
   ```sh
   cd ./data/gitignore/Custom
@@ -27,21 +27,16 @@ Creating new directories to help contributors as the list gets larger.  The curr
 ```
 // Suggested Directory Structure
 ├ data
+├── custom
+├── patch
 └── gitignore
     ├── opsys
     ├── proglang
-    ├── ide
-    └── // New template category
+    └── ide
 ```
-## Windows Command Line
-
-Looking for a clean way to implement executing the `gi` command from the command line.  With Linux and OSX, it's currently implemented though a function that takes a parameter to curl.
-
-```sh
-function gi() { 
-   curl http://gitignore.io/api/\$@;
-}
-```
+- __custom__ - Custom templates that aren't supported by GitHub's gitignore list
+- __patch__ - Patches to GitHub's gitignore list
+- __gitignore__ - GitHub submodule of [https://github.com/github/gitignore](https://github.com/github/gitignore)
 
 ## Explore
 

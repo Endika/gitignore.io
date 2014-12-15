@@ -1,0 +1,126 @@
+{
+
+    "express": {
+        "view cache": false,
+        "view engine": "js",
+        "views": "path:./.build/templates"
+    },
+
+    "view engines": {
+        "js": {
+            "module": "engine-munger",
+            "renderer": {
+                "method": "js",
+                "arguments": [
+                    { "cache": true },
+                    {
+                        "views": "config:express.views",
+                        "view engine": "config:express.view engine",
+                        "specialization": "config:specialization",
+                        "i18n": "config:i18n"
+                    }
+                ]
+            }
+        }
+    },
+
+
+    "i18n": {
+        "contentPath": "path:./locales",
+        "fallback": "en-US"
+    },
+
+    "middleware": {
+
+        "compress" : {
+          "enabled": true,
+          "module": {
+            "name": "compression"
+          }
+        },
+
+        "static": {
+            "module": {
+                "arguments": [ "path:./.build" ]
+            }
+        },
+
+        "router": {
+            "module": {
+                "arguments": [{ "directory": "path:./controllers" }]
+            }
+        },
+
+        "cookieParser": {
+          "module": {
+            "name": "cookie-parser",
+            "arguments": [
+              "JdtILpwWtE6voC3JX8md"
+            ]
+          }
+        },
+
+        "expressView": {
+            "priority": 100,
+            "enabled": true,
+            "module": {
+                "name": "engine-munger/lib/expressView"
+            }
+        },
+
+        "session" : {
+          "module": {
+            "name": "express-session",
+            "arguments": [
+              {
+                  "secret": "E1tA2aCvCCuQsIiBr3e7",
+                  "cookie": {
+                      "path": "/",
+                      "httpOnly": true,
+                      "maxAge": null
+                  },
+                  "resave": true,
+                  "saveUninitialized": true,
+                  "proxy": null
+              }
+            ]
+          }
+        },
+
+        "appsec": {
+          "module": {
+            "name": "lusca",
+            "arguments": [
+              {
+                  "csrf": true,
+                  "csp": false,
+                  "xframe": "SAMEORIGIN",
+                  "p3p": "JJR38398SJOOSB4YW9WX",
+                  "hsts": {"maxAge": 31536000, "includeSubDomains": true},
+                  "xssProtection": true
+              }
+            ]
+          }
+        },
+
+
+        "fileNotFound": {
+            "enabled": true,
+            "priority": 130,
+            "module": {
+                "name": "kraken-js/middleware/404",
+                "arguments": [ "errors/404" ]
+            }
+        },
+
+        "serverError": {
+            "enabled": true,
+            "priority": 140,
+            "module": {
+                "name": "kraken-js/middleware/500",
+                "arguments": [ "errors/500" ]
+            }
+        }
+
+    }
+}
