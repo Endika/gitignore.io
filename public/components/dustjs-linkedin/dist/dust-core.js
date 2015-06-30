@@ -1,4 +1,4 @@
-/*! Dust - Asynchronous Templating - v2.4.1
+/*! Dust - Asynchronous Templating - v2.3.6
 * http://linkedin.github.io/dustjs/
 * Copyright (c) 2014 Aleksander Williams; Released under the MIT License */
 (function(root) {
@@ -15,6 +15,7 @@
       loggerContext;
 
   dust.debugLevel = NONE;
+  dust.silenceErrors = false;
 
   // Try to find the console in global scope
   if (root && root.console && root.console.log) {
@@ -40,8 +41,7 @@
   } : function() { /* no op */ };
 
   /**
-   * Log dust debug statements, info statements, warning statements, and errors.
-   * Filters out the messages based on the dust.debuglevel.
+   * If dust.isDebug is true, Log dust debug statements, info statements, warning statements, and errors.
    * This default implementation will print to the console if it exists.
    * @param {String|Error} message the message to print/throw
    * @param {String} type the severity of the message(ERROR, WARN, INFO, or DEBUG)
@@ -55,6 +55,31 @@
       }
       dust.logQueue.push({message: message, type: type});
       logger.log('[DUST ' + type + ']: ' + message);
+    }
+
+    if (!dust.silenceErrors && type === ERROR) {
+      if (typeof message === 'string') {
+        throw new Error(message);
+      } else {
+        throw message;
+      }
+    }
+  };
+
+  /**
+   * If debugging is turned on(dust.isDebug=true) log the error message and throw it.
+   * Otherwise try to keep rendering.  This is useful to fail hard in dev mode, but keep rendering in production.
+   * @param {Error} error the error message to throw
+   * @param {Object} chunk the chunk the error was thrown from
+   * @public
+   */
+  dust.onError = function(error, chunk) {
+    logger.log('[!!!DEPRECATION WARNING!!!]: dust.onError will no longer return a chunk object.');
+    dust.log(error.message || error, ERROR);
+    if(!dust.silenceErrors) {
+      throw error;
+    } else {
+      return chunk;
     }
   };
 
@@ -74,18 +99,17 @@
     try {
       dust.load(name, chunk, Context.wrap(context, name)).end();
     } catch (err) {
-      chunk.setError(err);
+      dust.log(err, ERROR);
     }
   };
 
   dust.stream = function(name, context) {
-    var stream = new Stream(),
-        chunk = stream.head;
+    var stream = new Stream();
     dust.nextTick(function() {
       try {
         dust.load(name, stream.head, Context.wrap(context, name)).end();
       } catch (err) {
-        chunk.setError(err);
+        dust.log(err, ERROR);
       }
     });
     return stream;
@@ -342,13 +366,15 @@
 
     // Return the ctx or a function wrapping the application of the context.
     if (typeof ctx === 'function') {
-      return function() {
+      var fn = function() {
         try {
           return ctx.apply(ctxThis, arguments);
         } catch (err) {
           return dust.log(err, ERROR);
         }
       };
+      fn.isFunction = true;
+      return fn;
     } else {
       if (ctx === undefined) {
         dust.log('Cannot find the value for reference [{' + down.join('.') + '}] in template [' + this.getTemplateName() + ']');
@@ -590,6 +616,7 @@
 
   Chunk.prototype.reference = function(elem, context, auto, filters) {
     if (typeof elem === 'function') {
+      elem.isFunction = true;
       // Changed the function calling to use apply with the current context to make sure
       // that "this" is wat we expect it to be inside the function
       elem = elem.apply(context.current(), [this, context, null, {auto: auto, filters: filters}]);
@@ -762,7 +789,7 @@
         return chunk;
       }
     } catch (err) {
-      chunk.setError(err);
+      dust.log(err, ERROR);
       return chunk;
     }
   };

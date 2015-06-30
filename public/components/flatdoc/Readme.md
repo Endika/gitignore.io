@@ -14,7 +14,7 @@ way to make open source documentation from *Readme* files.
 
 *Current version: [v/0.8.6][dist]*
 
-[![Build Status](https://travis-ci.org/rstacruz/flatdoc.png?branch=gh-pages)](https://travis-ci.org/rstacruz/flatdoc)
+[![Build Status](https://travis-ci.org/rstacruz/flatdoc.svg?branch=gh-pages)](https://travis-ci.org/rstacruz/flatdoc)
 
 Getting started
 ---------------
@@ -26,18 +26,20 @@ you're all good to go.
 
 *In short: just download this file and upload it somewhere.*
 
+The main JS and CSS files are also available in [npm] and [bower].
+
 [Download template >][template]
 
 ``` html
 <html>
   <head>
     <!-- Flatdoc -->
-    <script src='http://rstacruz.github.io/flatdoc/v/0.8.6/legacy.js'></script>
-    <script src='http://rstacruz.github.io/flatdoc/v/0.8.6/flatdoc.js'></script>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js'></script>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js'></script>
 
     <!-- Flatdoc theme (optional) -->
-    <link  href='http://rstacruz.github.io/flatdoc/v/0.8.6/theme-white/style.css' rel='stylesheet'>
-    <script src='http://rstacruz.github.io/flatdoc/v/0.8.6/theme-white/script.js'></script>
+    <link  href='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/style.css' rel='stylesheet'>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/script.js'></script>
 
     <!-- Initializer -->
     <script>
@@ -49,10 +51,13 @@ you're all good to go.
 
   <body role='flatdoc'>
     <div role='flatdoc-menu'></div>
-    <div role='flatdoc-content'></div>
+    <div role='flatdoc-content' class='content'></div>
   </body>
 </html>
 ```
+
+[bower]: http://bower.io/search/?q=flatdoc
+[npm]: https://www.npmjs.org/package/flatdoc
 
 ### Via GitHub
 

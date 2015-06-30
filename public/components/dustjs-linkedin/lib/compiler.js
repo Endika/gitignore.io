@@ -19,7 +19,7 @@
     //
     // for the common case (using compile and render) a name is required so that templates will be cached by name and rendered later, by name.
     if (!name && name !== null) {
-      throw new Error('Template name parameter cannot be undefined when calling dust.compile');
+      dust.log(new Error("Template name parameter cannot be undefined when calling dust.compile"), 'ERROR');
     }
  
     try {
@@ -324,7 +324,7 @@
       if (out.length) {
         return '{' + out.join(',') + '}';
       }
-      return '{}';
+      return 'null';
     },
 
     bodies: function(context, node) {
