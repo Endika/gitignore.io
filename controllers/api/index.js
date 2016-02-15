@@ -8,9 +8,18 @@ module.exports = function (router) {
  * GET List of all ignore types
  */
     router.get('/list', function (req, res) {
+      var format = req.query.format;
       res.setHeader('Cache-Control', 'public, max-age=0');
-      res.setHeader('Content-Type', 'text/plain');
       res.setHeader('Expires', new Date(Date.now()).toUTCString());
+      if (format === 'json') {
+          res.json(DatastoreModel.JSONObject);
+          return;
+      }
+      res.setHeader('Content-Type', 'text/plain');
+      if (format === 'lines') {
+          res.send(DatastoreModel.JSONStringLines);
+          return;
+      }
       res.send(DatastoreModel.JSONString);
     });
 /*
@@ -54,7 +63,7 @@ module.exports = function (router) {
  * Helper for generating concatenated gitignore templates
  */
 function generateFile(ignoreString, list){
-  var output = '# Created by https://www.gitignore.io/api/'+ignoreString+'\n';
+  var output = '\n# Created by https://www.gitignore.io/api/'+ignoreString+'\n';
   for (var file in list) {
     if (DatastoreModel.JSONObject[list[file]] === undefined){
       output += '\n#!! ERROR: ' + list[file] + ' is undefined. Use list command to see defined gitignore types !!#\n';

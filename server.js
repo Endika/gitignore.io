@@ -1,5 +1,4 @@
 'use strict';
-
 var app = require('./index');
 var http = require('http');
 

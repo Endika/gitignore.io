@@ -66,7 +66,8 @@ Function gig {
 }
 ```
 
-Or, if you have curl installed(Generally, [Curl](http://curl.haxx.se/) is bundled with [msysgit](http://msysgit.github.io)), create `curl.cmd` with [this content](https://gist.github.com/912993)
+Create a Command Line Prompt Script
+If you have installed [msysgit](http://msysgit.github.io)), create `gi.cmd` with content below. And copy it to `C:\Program Files\Git\cmd\gi.cmd`, assuming `msysgit` was installed to `c:\Program Files\Git`. Make sure that `C:\Program Files\Git\cmd` is added to the environment variable `path`.
 ```bat
 @rem Do not use "echo off" to not affect any child calls.
 @setlocal
@@ -79,15 +80,8 @@ Or, if you have curl installed(Generally, [Curl](http://curl.haxx.se/) is bundle
 @if not exist "%HOME%" @set HOME=%HOMEDRIVE%%HOMEPATH%
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
-@curl.exe %*
+@curl.exe -L -s https://www.gitignore.io/api/%*
 ```
-And copy it to `C:\Program Files\Git\cmd\curl.cmd`, assuming `msysgit` was installed to `c:\Program Files\Git`.
-Then, create `gi.cmd` with this content
-```bat
-@curl -L -s https://www.gitignore.io/api/%1
-```
-Copy this `gi.cmd` file to `C:\Program Files\Git\cmd\gi.cmd`, still assuming `msysgit` was installed to `c:\Program Files\Git`.
-Make sure that `C:\Program Files\Git\cmd` is added to the environment variable `path`.
 
 # Use Command Line
 
@@ -147,6 +141,24 @@ textpattern,turbogears2,typo3,unity,vagrant,vim,virtualenv,visualstudio,vvvv,
 waf,wakanda,webmethods,webstorm,windows,wordpress,xamarinstudio,xcode,xilinxise,
 yeoman,yii,zendframework
 ```
+
+# Install Locally
+
+## Instructions
+
+In order to install gitignore.io locally, you'll need to have **node.js** and
+**git** installed on your machine.
+
+```sh
+$ git clone git@github.com:joeblau/gitignore.io.git
+$ cd gitignore.io/
+$ git submodule init
+$ git submodule update
+$ npm install
+$ node server.js
+```
+
+
 # About
 
 .gitignore.io is a web service designed to help you create .gitignore files for
@@ -155,7 +167,7 @@ creating a .gitignore for your operating system, programming language, or IDE.
 
 ## License
 
-Copyright (C) 2013-2015 Joe Blau
+Copyright (C) 2013-2016
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
